@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+</head>
+<body>
+  <h1 class="title">Login</h1>
+  <div class="lgcontainer">
+    <form class="lgform">
+      <input class="lgname" type="text" placeholder="UserName" name="username"> <br/>
+      <input class="lgpwd" type="password" placeholder="Password" name="password"> <br/>
+    </form>
+    <button class="lgbtn">Login</button>
+    <button class="joinbtn">Join</button>
+  </div>
+  <script>
+    const xhr = new XMLHttpRequest();
+
+    document.querySelector(".joinbtn").addEventListener('click', () => {
+      console.log('조인버튼 확인');
+      // window.location.href = '/join'
+    })
+
+    document.querySelector(".lgbtn").addEventListener('click', () => {
+      console.log('로그인 버튼 확인');
+      const data = {
+        username: document.querySelector('.lgname').value,
+        password: document.querySelector('.lgpwd').value
+      }
+      sendData('/login', data)
+    })
+
+    function sendData(url, data) {
+      xhr.open('POST', url);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = () => {
+        if(xhr.readyState === xhr.DONE) {
+          if(xhr.status === 200 || xhr.status === 201) {
+            console.log(xhr.responseText);
+          } else {
+            console.log(xhr.responseText);
+          }
+        }
+      }
+      xhr.send(JSON.stringify(data));
+    }
+
+  </script>
+</body>
+</html>

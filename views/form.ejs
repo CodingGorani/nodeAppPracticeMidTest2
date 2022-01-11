@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>form</title>
+</head>
+<body>
+  <form class="dataform">
+    Your Name : <input class="nameform" type="text" name="name"> <br/>
+    Your Reservation time : <input class="timeform" type="time" name="time"> <br/>
+  </form>
+  <button class="dataformbtn">제출</button>
+  <div class="message"></div>
+  <script>
+    const btn = document.querySelector('.dataformbtn');
+    const messageDiv = document.querySelector('.message');
+    const xhr = new XMLHttpRequest();
+    
+    btn.addEventListener('click', () => { sendData(); });
+
+    function sendData() {
+      const name = document.querySelector('.nameform').value;
+      const time = document.querySelector('.timeform').value;
+      const data = { name, time }
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === xhr.DONE) {
+          if (xhr.status === 200 || xhr.status === 201) {
+            console.log(xhr.responseText);
+            document.querySelector('.nameform').value = "";
+            document.querySelector('.timeform').value = "";
+            messageDiv.innerHTML = '<a href="/">Reserveation is Registered. Click here to go main page</a>'
+
+          } else {
+            console.log(xhr.responseText);
+          }
+        }
+      }
+      xhr.open('POST', '/form');
+      xhr.setRequestHeader('Content-Type', 'application/json')
+      xhr.send(JSON.stringify(data));
+    }
+  </script>
+</body>
+</html>

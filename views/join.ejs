@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join</title>
+</head>
+<body>
+  <h1 class="title">join</h1>
+  <div class="joincontainer">
+    <form class="joinform" action="/join" method="post">
+      <input class="joinname" type="text" placeholder="UserName" name="username"> <br/>
+      <input class="joinpwd" type="password" placeholder="Password" name="password"> <br/>
+      <button type="submit" class="joinbtn">Join</button>
+    </form>
+  </div>
+  <script>
+    const joinForm = document.querySelector('.joinform');
+    joinForm.addEventListener('submit', () => {
+
+    })
+  </script>
+</body>
+</html>
