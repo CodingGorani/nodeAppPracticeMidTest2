@@ -15,7 +15,7 @@ const connection = mysql.createConnection({
 router.get('/', (req, res) => {
   req.session.destroy((err) => {
     if (err) throw err;
-    else res.redirect('/main');
+    else res.json({ message: 'logouted' });
   });
 });
 
