@@ -26,10 +26,11 @@ router.post('/', (req, res) => {
       if (err) throw err;
       if (results.length !== 0) {
         res.json({ message: 'You already joined' });
+        console.log([username, password]);
       } else {
         connection.query(
           'INSERT INTO user (username, password) VALUES (?, ?)',
-          [req.body.username, req.body.password],
+          [username, password],
           (err, results) => {
             if (err) throw err;
             if (results.length === 0) {

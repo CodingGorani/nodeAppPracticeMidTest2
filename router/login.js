@@ -7,7 +7,7 @@ require('dotenv').config();
 
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
-  username: process.env.DB_USER,
+  user: process.env.DB_USER,
   password: process.env.DB_PWD,
   database: process.env.DB_NAME,
 });
@@ -17,6 +17,22 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  res.status(200).json({ message: 'ok' });
+  const { username, password } = req.body;
+  connection.query(
+    'SELECT * FROM user WHERE username=? AND password=?',
+    [username, password],
+    (err, results) => {
+      if (err) throw err;
+      if (results.length === 0) {
+        res.json({ message: 'Wrong username or password' });
+      } else {
+        req.session.uid = results[0]._id;
+        req.session.isLogined = true;
+        req.session.save(() => {
+          res.redirect('/');
+        });
+      }
+    }
+  );
 });
 module.exports = router;

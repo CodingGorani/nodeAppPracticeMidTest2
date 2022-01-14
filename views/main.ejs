@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Happy New Year</h1>
+  <% if ( isLogined ) { %>
+    <div>
+      <button class="toresvbtn">Reservation</button>
+      <button class="logoutbtn" type="submit" formaction="/logout" formmethod="GET">Logout</button>
+    </div>
+  <% } else { %>
+    <div>
+      <button class="tologinbtn">Login</button>
+    </div>
+  <% } %>  
+  <script>
+
+    let reserveBtn = document.querySelector(".toresvbtn");
+    let loginBtn = document.querySelector(".tologinbtn");
+    let logoutBtn = document.querySelector(".logoutbtn");
+
+    if ( reserveBtn && logoutBtn ) {
+      reserveBtn.addEventListener('click', () => {
+        console.log('toreserve');
+        window.location.href = "/form";
+      });
+      logoutBtn.addEventListener('click', async () => {
+        try { 
+          const response = await fetch('/logout', {
+            method: 'GET'
+          });
+
+          console.log('Completed', response);
+
+        } catch (err) {
+          console.log(`Error : ${err}`);
+
+        }
+        console.log('logouted')
+      })
+    };
+
+    if ( loginBtn ) {
+      loginBtn.addEventListener('click', () => {
+      console.log('tologin');
+      window.location.href = "/login";
+      });
+    };
+
+  </script>
+</body>
+</html>
