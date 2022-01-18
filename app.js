@@ -3,8 +3,8 @@ var app = express();
 var mysql = require('mysql');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
-
 const router = require('./router/index.js');
+var connection = require('./lib/connection');
 require('dotenv').config();
 
 const sessdbOptions = {
@@ -13,13 +13,6 @@ const sessdbOptions = {
   password: process.env.DB_PWD,
   database: process.env.SS_DB_NAME,
 };
-
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PWD,
-  database: process.env.DB_NAME,
-});
 
 var sessionStore = new MySQLStore(sessdbOptions);
 

@@ -1,43 +1,33 @@
 var express = require('express');
+createHashedPassword = require('../lib/createHashedPassword');
 app = express();
 router = express.Router();
 mysql = require('mysql');
-
-require('dotenv').config();
-
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PWD,
-  database: process.env.DB_NAME,
-});
+crypto = require('crypto');
+connection = require('../lib/connection');
 
 router.get('/', (req, res) => {
   res.render('join.ejs');
 });
 
 router.post('/', (req, res) => {
-  console.log(req.body);
   const { username, password } = req.body;
   connection.query(
     'SELECT * FROM user WHERE username = ?',
     username,
-    (err, results) => {
+    async (err, results) => {
       if (err) throw err;
       if (results.length !== 0) {
         res.json({ message: 'You already joined' });
         console.log([username, password]);
       } else {
+        const { hashedPassword, salt } = await createHashedPassword(password);
         connection.query(
-          'INSERT INTO user (username, password) VALUES (?, ?)',
-          [username, password],
+          'INSERT INTO user (username, password, salt) VALUES (?, ?, ?)',
+          [username, hashedPassword, salt],
           (err, results) => {
             if (err) throw err;
-            if (results.length === 0) {
-              res.json({ message: 'Wrong Username Or Password' });
-            } else {
-              res.redirect('/');
-            }
+            else res.redirect('/');
           }
         );
       }
